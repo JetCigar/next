@@ -18,4 +18,39 @@ model Book{
   isbn String
   name String 
   price Int
+  //migrate again
+  detail String? // ALOOW NULL
+  registerDate DateTime? @default(now())
+  OrderDetail OrderDetail[]
+}
+
+
+//parent
+//Customer 1: x
+model Customer{
+  id Int @id() @default(autoincrement())
+  name String
+  phone String
+  address String
+  Order Order[] 
+}
+
+//child of customer , parent of OrderDetail
+//Order 1:Orderdetail x 
+model Order{
+  id Int @id() @default(autoincrement())
+  orderDate DateTime
+  payDate DateTime?
+  customerId Int
+  customer Customer @relation( fields: [customerId],references: [id])
+  OrderDetail OrderDetail[]
+}
+
+//child of Oderdetail x: book 1
+model OrderDetail{
+  id Int @id() @default(autoincrement())
+  orderId Int
+  bookId Int
+  book Book @relation(fields: [bookId],references: [id])
+  Order Order @relation(fields: [orderId],references: [id])
 }
